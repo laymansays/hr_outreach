@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Outreach Tracker — Bangalore 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0d0f14; --surface:#141720; --surface2:#1c2030; --surface3:#222840;
+    --border:#252a3a; --border2:#2e3550;
+    --accent:#4f7cff; --accent2:#22d3a5; --accent3:#f97316; --accentLi:#0a66c2;
+    --text:#e8eaf0; --muted:#7a8099; --tag-bg:#1e2540;
+    --s0:#2a2030; --s0t:#9b6fff; --s1:#0d2a20; --s1t:#22d3a5; --s2:#2a1a0d; --s2t:#f97316;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,124,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(79,124,255,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+  .wrap{position:relative;z-index:1;max-width:1220px;margin:0 auto;padding:48px 24px 80px}
+
+  /* HEADER */
+  .brand{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:8px}
+  h1{font-family:'Instrument Serif',serif;font-size:clamp(26px,4vw,42px);font-weight:400;line-height:1.15}
+  h1 em{font-style:italic;color:var(--accent)}
+  .header{margin-bottom:32px;border-bottom:1px solid var(--border);padding-bottom:28px}
+  .meta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .mpill{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:4px 13px;font-family:'DM Mono',monospace}
+  .mdot{width:6px;height:6px;border-radius:50%;background:var(--accent2);animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+
+  /* ════ SEARCH PANEL ════ */
+  .search-panel{background:var(--surface);border:1px solid var(--border2);border-radius:18px;padding:22px 26px;margin-bottom:24px;position:relative;overflow:hidden}
+  .search-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3))}
+  .sp-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin-bottom:15px;display:flex;align-items:center;gap:7px}
+  .sp-title span{color:var(--muted);font-size:10px;letter-spacing:.04em}
+  .sp-fields{display:grid;grid-template-columns:1.2fr 1fr 160px auto;gap:10px;align-items:end}
+  @media(max-width:800px){.sp-fields{grid-template-columns:1fr 1fr}}
+  @media(max-width:500px){.sp-fields{grid-template-columns:1fr}}
+  .fgroup{display:flex;flex-direction:column;gap:5px}
+  .flabel{font-size:10px;font-family:'DM Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;display:flex;gap:5px;align-items:center}
+  .req-dot{color:var(--accent3);font-size:11px}
+  .finput{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:9px 13px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;width:100%}
+  .finput::placeholder{color:var(--muted)}
+  .finput:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,124,255,.1)}
+  .finput.err{border-color:var(--accent3);box-shadow:0 0 0 3px rgba(249,115,22,.1)}
+  .sbtn{background:linear-gradient(135deg,var(--accent),#7c3aed);border:none;border-radius:10px;padding:10px 20px;color:#fff;font-size:13px;font-family:'Outfit',sans-serif;font-weight:500;cursor:pointer;transition:opacity .2s,transform .2s;display:flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;height:40px}
+  .sbtn:hover{opacity:.88;transform:translateY(-1px)}
+  .sbtn:active{transform:translateY(0)}
+  .sp-hint{margin-top:9px;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px}
+
+  /* STATS */
+  .stats-bar{display:flex;gap:1px;background:var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px}
+  .si{flex:1;background:var(--surface);padding:13px 14px;text-align:center}
+  .sn{font-family:'Instrument Serif',serif;font-size:24px;color:var(--accent);line-height:1;margin-bottom:2px}
+  .sl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-family:'DM Mono',monospace}
+
+  /* FILTER */
+  .filter-bar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+  .fl{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.08em}
+  .fb{font-size:11px;padding:5px 12px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s}
+  .fb:hover{border-color:var(--accent);color:var(--accent)}
+  .fb.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* GRID */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(348px,1fr));gap:15px}
+
+  /* CARD */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:visible;transition:border-color .2s,transform .2s;animation:fadeUp .4s ease both;position:relative}
+  .card:hover{border-color:rgba(79,124,255,.35);transform:translateY(-2px)}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+  .card-header{padding:17px 18px 13px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start}
+  .avatar{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:17px;color:#fff;flex-shrink:0;font-style:italic}
+  .cname{font-size:14px;font-weight:500;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ctitle{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+  .cco{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;color:var(--accent);background:rgba(79,124,255,.1);padding:2px 7px;border-radius:5px;border:1px solid rgba(79,124,255,.2);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  .status-row{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;border-bottom:1px solid var(--border);gap:8px}
+  .slabel{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+  .sbtns{display:flex;gap:4px}
+  .sbtn2{font-size:10px;padding:3px 8px;border-radius:100px;border:1px solid transparent;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s}
+  .sbtn2[data-s="0"]{background:var(--s0);color:var(--s0t);border-color:rgba(155,111,255,.3)}
+  .sbtn2[data-s="1"]{background:var(--s1);color:var(--s1t);border-color:rgba(34,211,165,.3)}
+  .sbtn2[data-s="2"]{background:var(--s2);color:var(--s2t);border-color:rgba(249,115,22,.3)}
+  .sbtn2.active[data-s="0"]{background:rgba(155,111,255,.25);box-shadow:0 0 0 1px var(--s0t)}
+  .sbtn2.active[data-s="1"]{background:rgba(34,211,165,.2);box-shadow:0 0 0 1px var(--s1t)}
+  .sbtn2.active[data-s="2"]{background:rgba(249,115,22,.2);box-shadow:0 0 0 1px var(--s2t)}
+
+  .card-body{padding:13px 18px;display:flex;flex-direction:column;gap:10px}
+  .irow{display:flex;gap:7px;align-items:flex-start}
+  .iicon{width:24px;height:24px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px}
+  .ilabel{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-family:'DM Mono',monospace;margin-bottom:2px}
+  .ivalue{font-size:11px;color:var(--text);line-height:1.4}
+  .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+  .tag{font-size:9px;padding:2px 6px;background:var(--tag-bg);border:1px solid var(--border);border-radius:4px;color:var(--accent2);font-family:'DM Mono',monospace}
+  .echip{font-family:'DM Mono',monospace;font-size:10px;color:var(--accent2);background:rgba(34,211,165,.08);border:1px solid rgba(34,211,165,.2);padding:3px 8px;border-radius:5px;display:inline-block;word-break:break-all}
+  .noemail{font-size:11px;color:var(--muted);font-style:italic}
+
+  /* ACTIONS */
+  .card-actions{padding:11px 18px;background:var(--surface2);border-top:1px solid var(--border);display:flex;gap:7px;border-radius:0 0 14px 14px}
+  .abtn{padding:8px 10px;border-radius:8px;font-size:11px;font-family:'Outfit',sans-serif;font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px;text-decoration:none;border:1px solid transparent}
+  .abtn-li{background:var(--accentLi);border-color:var(--accentLi);color:#fff;flex:1.4}
+  .abtn-li:hover{background:#0958a8}
+  .abtn-qcopy{background:transparent;border-color:var(--border);color:var(--muted);flex:.6}
+  .abtn-qcopy:hover{border-color:var(--accent3);color:var(--accent3)}
+  .abtn-qcopy.copied{border-color:var(--accent2);color:var(--accent2)}
+
+  /* ════ LINKEDIN DROPDOWN ════ */
+  .li-wrap{position:relative;flex:1.4}
+  .li-drop{
+    display:none;
+    position:absolute;
+    bottom:calc(100% + 12px);
+    left:50%;
+    transform:translateX(-50%);
+    width:310px;
+    background:var(--surface);
+    border:1px solid var(--border2);
+    border-radius:16px;
+    box-shadow:0 24px 64px rgba(0,0,0,.7),0 0 0 1px rgba(79,124,255,.12);
+    z-index:9999;
+    overflow:hidden;
+  }
+  .li-drop.open{display:block;animation:dropUp .2s ease}
+  @keyframes dropUp{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+  .li-drop::after{content:'';position:absolute;bottom:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:12px;height:12px;background:var(--surface);border-right:1px solid var(--border2);border-bottom:1px solid var(--border2)}
+
+  /* profile header inside dropdown */
+  .lip-header{background:linear-gradient(160deg,#0a3363,#0a66c2 60%,#1082d4);padding:15px;display:flex;gap:11px;align-items:center;position:relative}
+  .lip-close{position:absolute;top:9px;right:9px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.12);border:none;color:rgba(255,255,255,.85);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;line-height:1}
+  .lip-close:hover{background:rgba(255,255,255,.22)}
+  .lip-avatar{width:46px;height:46px;border-radius:50%;border:2.5px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:19px;color:#fff;font-style:italic;flex-shrink:0}
+  .lip-name{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px}
+  .lip-role{font-size:10px;color:rgba(255,255,255,.75);line-height:1.3;margin-bottom:4px}
+  .lip-co{display:inline-block;background:rgba(255,255,255,.14);color:rgba(255,255,255,.9);font-size:9px;padding:2px 7px;border-radius:4px;font-family:'DM Mono',monospace}
+
+  /* workflow inside dropdown */
+  .li-wf{padding:14px 15px}
+  .wf-title{font-size:9px;font-family:'DM Mono',monospace;color:var(--accent);text-transform:uppercase;letter-spacing:.13em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .wf-title::after{content:'';flex:1;height:1px;background:var(--border)}
+  .steps{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+  .step{display:flex;align-items:flex-start;gap:9px;padding:7px 9px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;transition:border-color .2s}
+  .step:hover{border-color:rgba(79,124,255,.35)}
+  .stepn{width:17px;height:17px;background:var(--surface3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-family:'DM Mono',monospace;color:var(--accent);flex-shrink:0;margin-top:1px}
+  .stepa{font-size:11px;font-weight:500;color:var(--text);margin-bottom:1px}
+  .steph{font-size:9px;color:var(--muted);line-height:1.3}
+  .stepbadge{display:inline-block;background:rgba(79,124,255,.15);color:var(--accent);border:1px solid rgba(79,124,255,.25);border-radius:3px;font-size:9px;padding:1px 5px;font-family:'DM Mono',monospace;margin-top:2px}
+  .li-divider{height:1px;background:var(--border);margin:10px 0}
+  .li-acts{display:flex;flex-direction:column;gap:6px}
+  .liabtn{width:100%;padding:9px 13px;border-radius:9px;font-size:12px;font-family:'Outfit',sans-serif;font-weight:500;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;border:1px solid transparent}
+  .liabtn-p{background:var(--accentLi);border-color:var(--accentLi);color:#fff}
+  .liabtn-p:hover{background:#0958a8}
+  .liabtn-c{background:transparent;border-color:var(--border2);color:var(--muted)}
+  .liabtn-c:hover{border-color:var(--accent3);color:var(--accent3)}
+  .liabtn-c.copied{border-color:var(--accent2);color:var(--accent2)}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface2);border:1px solid var(--accent2);color:var(--accent2);padding:9px 18px;border-radius:100px;font-size:12px;font-family:'DM Mono',monospace;transition:transform .3s ease;z-index:99999;pointer-events:none;white-space:nowrap}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+
+  /* EMPTY */
+  .empty{grid-column:1/-1;padding:56px 20px;text-align:center;color:var(--muted);display:none}
+  .empty.show{display:block}
+  .empty h3{font-family:'Instrument Serif',serif;font-size:22px;color:var(--text);margin-bottom:7px}
+  .empty p{font-size:13px}
+  .empty a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">T&amp;P Outreach Tracker · BCA College · Vibe Prospecting</div>
+    <h1>HR Contacts — <em>Bangalore</em> 2026</h1>
+    <div class="meta-row">
+      <div class="mpill"><span class="mdot"></span>10 Live Profiles</div>
+      <div class="mpill">📍 Bengaluru, Karnataka</div>
+      <div class="mpill">🎯 IT · Data · Finance · Sales · Ops</div>
+      <div class="mpill">🎓 Fresher / Internship Focus</div>
+    </div>
+  </div>
+
+  <!-- ══════════ SEARCH PANEL ══════════ -->
+  <div class="search-panel">
+    <div class="sp-title">🔍 Search &amp; Filter Contacts <span>· type to filter cards below in real-time</span></div>
+    <div class="sp-fields">
+
+      <div class="fgroup">
+        <label class="flabel">Company Name <span class="req-dot">*</span></label>
+        <input id="s-co" class="finput" type="text" placeholder="e.g. Infosys, Wipro, PhonePe…"
+          oninput="liveSearch()" onkeydown="if(event.key==='Enter')doSearch()" />
+      </div>
+
+      <div class="fgroup">
+        <label class="flabel">Website <span style="color:var(--muted);font-size:9px">(optional)</span></label>
+        <input id="s-web" class="finput" type="text" placeholder="e.g. infosys.com"
+          oninput="liveSearch()" onkeydown="if(event.key==='Enter')doSearch()" />
+      </div>
+
+      <div class="fgroup">
+        <label class="flabel">Location</label>
+        <input id="s-loc" class="finput" type="text" value="Bengaluru / Bangalore"
+          onkeydown="if(event.key==='Enter')doSearch()" />
+      </div>
+
+      <button class="sbtn" onclick="doSearch()">🔎 Search</button>
+    </div>
+    <div class="sp-hint">💡 Filters existing cards instantly · <strong style="color:var(--text)">Company Name is required</strong> to search · Location defaults to Bengaluru</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="si"><div class="sn" id="st-total">10</div><div class="sl">Total</div></div>
+    <div class="si"><div class="sn" id="st-vis">10</div><div class="sl">Showing</div></div>
+    <div class="si"><div class="sn" id="st-em">4</div><div class="sl">Emails</div></div>
+    <div class="si"><div class="sn" id="st-p">10</div><div class="sl">Pending</div></div>
+    <div class="si"><div class="sn" id="st-c">0</div><div class="sl">Contacted</div></div>
+    <div class="si"><div class="sn" id="st-r">0</div><div class="sl">Replied</div></div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <span class="fl">FILTER:</span>
+    <button class="fb active" onclick="setFilter('all',this)">All</button>
+    <button class="fb" onclick="setFilter('pending',this)">⏳ Pending</button>
+    <button class="fb" onclick="setFilter('contacted',this)">✉️ Contacted</button>
+    <button class="fb" onclick="setFilter('replied',this)">💬 Replied</button>
+    <button class="fb" onclick="setFilter('email',this)">📧 Has Email</button>
+    <button class="fb" onclick="clearAll()" style="margin-left:auto">✕ Clear All</button>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid" id="grid">
+    <div class="empty" id="emptyState">
+      <h3>No contacts match</h3>
+      <p>Try a different company name or <a href="#" onclick="clearAll();return false">clear all filters</a>.</p>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──────────────────────────────────
+const MSG = "Hi, good day. I work with BCA students trained in AWS & Cloud fundamentals, ready for entry-level roles. Open to connecting for hiring opportunities.";
+
+const DATA = [
+  {id:1,init:"M",grad:"linear-gradient(135deg,#4f7cff,#22d3a5)",
+   name:"Mohammed Sadiq",title:"Sr. Talent Acquisition Specialist",company:"Bosch Global Software Technologies",
+   website:"bosch-softwaretechnologies.com",email:null,
+   li:"https://linkedin.com/in/mohammed-sadiq-a0b723121",
+   focus:["IT Recruitment","Contract Staffing","Permanent Roles"],
+   xp:"Sr. TA Specialist @ Bosch Global — LinkedIn Recruiter, IT Recruitment"},
+  {id:2,init:"S",grad:"linear-gradient(135deg,#a855f7,#ec4899)",
+   name:"Sahana Shah",title:"Leader — Talent Acquisition",company:"Tech Mahindra",
+   website:"techmahindra.com",email:"ss00803386@techmahindra.com",
+   li:"https://linkedin.com/in/sahana-shah-359101152",
+   focus:["IT / Tech","Campus Hiring","Sourcing"],
+   xp:"Leader TA @ Tech Mahindra — Executive Search, Negotiation, Campus"},
+  {id:3,init:"G",grad:"linear-gradient(135deg,#06b6d4,#3b82f6)",
+   name:"Grishma M P",title:"Talent Acquisition Leader",company:"Infosys",
+   website:"infosys.com",email:null,
+   li:"https://linkedin.com/in/grishma-mp-a98401245",
+   focus:["IT","Campus Recruitment","Mass Hiring"],
+   xp:"TA Leader @ Infosys — Mass hiring, Campus drives | MBA HR Bharathiar Univ."},
+  {id:4,init:"A",grad:"linear-gradient(135deg,#f59e0b,#ef4444)",
+   name:"Aarti Agrawal",title:"Senior TA Specialist",company:"Zensar Technologies",
+   website:"zensar.com",email:"a.agrawal@zensar.com",
+   li:"https://linkedin.com/in/aarti-agrawal-409841104",
+   focus:["IT Recruitment","Global TA","Technical Screening"],
+   xp:"Sr. TA Specialist @ Zensar — Global TA, HR Consulting, Technical Recruiting"},
+  {id:5,init:"S",grad:"linear-gradient(135deg,#22d3a5,#0ea5e9)",
+   name:"Sumit Kumar",title:"TA & University Relations Leader",company:"Myntra",
+   website:"myntra.com",email:null,
+   li:"https://linkedin.com/in/sumit-kumar-37a80228",
+   focus:["University Relations","Operations","Sales"],
+   xp:"TA & University Relations Lead @ Myntra | XLRI Jamshedpur alumni"},
+  {id:6,init:"S",grad:"linear-gradient(135deg,#8b5cf6,#d946ef)",
+   name:"Shwetha S",title:"Associate Manager — HRBP",company:"L&T Technology Services",
+   website:"ltts.com",email:null,
+   li:"https://linkedin.com/in/shwetha-s-6a000994",
+   focus:["IT / Engineering","HRBP","Talent Development"],
+   xp:"Assoc. Manager HRBP @ L&T Tech Services — Talent Strategy, SLA Mgmt"},
+  {id:7,init:"V",grad:"linear-gradient(135deg,#f97316,#eab308)",
+   name:"Venkatesh Vemulamada",title:"Head of TA — Tech & Product",company:"PhonePe",
+   website:"phonepe.com",email:"venkatesh.v@phonepe.com",
+   li:"https://linkedin.com/in/venkateshvemulamada",
+   focus:["IT / Product","Fintech","Data"],
+   xp:"Head of TA Tech & Product @ PhonePe — Director level, Cloud, E-commerce"},
+  {id:8,init:"S",grad:"linear-gradient(135deg,#0ea5e9,#22d3a5)",
+   name:"Sankar Kumar",title:"Senior Manager — Talent Acquisition",company:"Coforge",
+   website:"coforge.com",email:null,
+   li:"https://linkedin.com/in/sankar-kumar-659b977",
+   focus:["IT Recruitment","Executive Search","Contract Roles"],
+   xp:"Senior Manager TA @ Coforge — Strategic Sourcing, IT Recruitment, Vendor Mgmt"},
+  {id:9,init:"P",grad:"linear-gradient(135deg,#ec4899,#f43f5e)",
+   name:"Pooja Mazumdar",title:"Senior Manager — Human Resources",company:"Walmart Global Tech India",
+   website:"walmart.com",email:"pooja.mazumdar@walmart.com",
+   li:"https://linkedin.com/in/poojamazumdar",
+   focus:["IT / Data","Operations","Finance"],
+   xp:"Senior Manager HR @ Walmart Global Tech — Data Storytelling, Analytics, TA"},
+  {id:10,init:"S",grad:"linear-gradient(135deg,#6366f1,#8b5cf6)",
+   name:"Sushant Mishra",title:"Senior Recruitment Manager",company:"Wipro",
+   website:"wipro.com",email:null,
+   li:"https://linkedin.com/in/sushant-mishra-0b4236209",
+   focus:["IT / Tech","Corporate Recruiting","E-Recruitment"],
+   xp:"Senior Recruitment Manager @ Wipro — Corporate Recruiting, Talent Management"}
+];
+
+// ── STATE ─────────────────────────────────
+let statuses = {};
+DATA.forEach(d => statuses[d.id] = 0);
+let activeFilter = 'all';
+let searchStr    = '';
+let openDrop     = null;
+
+// ── RENDER ────────────────────────────────
+function render() {
+  const grid = document.getElementById('grid');
+  grid.querySelectorAll('.card').forEach(el => el.remove());
+
+  const q = searchStr.toLowerCase().trim();
+  let vis = 0;
+
+  DATA.forEach((c, i) => {
+    const s = statuses[c.id];
+    // search
+    if (q) {
+      const hit = c.company.toLowerCase().includes(q) ||
+                  c.name.toLowerCase().includes(q)    ||
+                  (c.website||'').toLowerCase().includes(q);
+      if (!hit) return;
+    }
+    // filter
+    if (activeFilter==='pending'   && s!==0) return;
+    if (activeFilter==='contacted' && s!==1) return;
+    if (activeFilter==='replied'   && s!==2) return;
+    if (activeFilter==='email'     && !c.email) return;
+
+    vis++;
+    grid.appendChild(mkCard(c, i));
+  });
+
+  document.getElementById('emptyState').classList.toggle('show', vis===0);
+  document.getElementById('st-vis').textContent = vis;
+  updStats();
+}
+
+function mkCard(c, i) {
+  const s = statuses[c.id];
+  const el = document.createElement('div');
+  el.className='card';
+  el.dataset.id = c.id;
+  el.style.animationDelay = `${(i%10)*.05+.05}s`;
+  el.innerHTML = `
+  <div class="card-header">
+    <div class="avatar" style="background:${c.grad}">${c.init}</div>
+    <div style="flex:1;min-width:0">
+      <div class="cname">${c.name}</div>
+      <div class="ctitle">${c.title}</div>
+      <div class="cco">🏢 ${c.company}</div>
+    </div>
+  </div>
+  <div class="status-row">
+    <span class="slabel">STATUS</span>
+    <div class="sbtns">
+      <button class="sbtn2 ${s===0?'active':''}" data-s="0" onclick="setStat(this,${c.id})">Pending</button>
+      <button class="sbtn2 ${s===1?'active':''}" data-s="1" onclick="setStat(this,${c.id})">Contacted</button>
+      <button class="sbtn2 ${s===2?'active':''}" data-s="2" onclick="setStat(this,${c.id})">Replied</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="irow">
+      <div class="iicon">🎯</div>
+      <div><div class="ilabel">Hiring Focus</div><div class="tags">${c.focus.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>
+    </div>
+    <div class="irow">
+      <div class="iicon">✉️</div>
+      <div><div class="ilabel">Work Email</div>${c.email?`<span class="echip">${c.email}</span>`:`<span class="noemail">Not publicly available</span>`}</div>
+    </div>
+    <div class="irow">
+      <div class="iicon">🔗</div>
+      <div><div class="ilabel">LinkedIn</div><div class="ivalue" style="font-size:10px;color:var(--muted)">${c.li.replace('https://','')}</div></div>
+    </div>
+  </div>
+  <div class="card-actions">
+    <div class="li-wrap">
+      <button class="abtn abtn-li" onclick="togDrop(event,${c.id})">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn Preview ▾
+      </button>
+
+      <!-- ── DROPDOWN ── -->
+      <div class="li-drop" id="drop-${c.id}">
+        <div class="lip-header">
+          <button class="lip-close" onclick="closeDrop(${c.id})">✕</button>
+          <div class="lip-avatar" style="background:${c.grad.replace('linear-gradient(135deg,','').replace(')','').split(',')[0]}">${c.init}</div>
+          <div>
+            <div class="lip-name">${c.name}</div>
+            <div class="lip-role">${c.title}</div>
+            <span class="lip-co">${c.company}</span>
+          </div>
+        </div>
+
+        <div class="li-wf">
+          <div class="wf-title">Outreach Workflow — Step by Step</div>
+          <div class="steps">
+            <div class="step">
+              <div class="stepn">1</div>
+              <div><div class="stepa">Open LinkedIn Profile</div><div class="steph">Click "Open &amp; Connect on LinkedIn ↗" below — opens in new tab</div></div>
+            </div>
+            <div class="step">
+              <div class="stepn">2</div>
+              <div><div class="stepa">Click <span class="stepbadge">Connect</span> on their profile</div><div class="steph">Find the blue Connect button on the profile page</div></div>
+            </div>
+            <div class="step">
+              <div class="stepn">3</div>
+              <div><div class="stepa">Click <span class="stepbadge">Add a note</span></div><div class="steph">In the connection popup, choose "Add a note" to personalise</div></div>
+            </div>
+            <div class="step">
+              <div class="stepn">4</div>
+              <div><div class="stepa">Copy message → Paste → Send</div><div class="steph">Copy message below, paste into the note field, hit Send ✅</div></div>
+            </div>
+          </div>
+          <div class="li-divider"></div>
+          <div class="li-acts">
+            <a class="liabtn liabtn-p" href="${c.li}" target="_blank">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              Open &amp; Connect on LinkedIn ↗
+            </a>
+            <button class="liabtn liabtn-c" id="dcopy-${c.id}" onclick="copyDrop(${c.id})">
+              📋 Copy Outreach Message
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- /DROPDOWN -->
+    </div>
+
+    <button class="abtn abtn-qcopy" id="qc-${c.id}" onclick="quickCopy(${c.id})">📋 Msg</button>
+  </div>`;
+  return el;
+}
+
+// ── DROPDOWN ──────────────────────────────
+function togDrop(e, id) {
+  e.stopPropagation();
+  if (openDrop && openDrop!==id) {
+    const prev = document.getElementById(`drop-${openDrop}`);
+    if(prev) prev.classList.remove('open');
+  }
+  const drop = document.getElementById(`drop-${id}`);
+  const isOpen = drop.classList.contains('open');
+  drop.classList.toggle('open',!isOpen);
+  openDrop = isOpen ? null : id;
+}
+function closeDrop(id) {
+  const d=document.getElementById(`drop-${id}`);
+  if(d) d.classList.remove('open');
+  openDrop=null;
+}
+document.addEventListener('click',()=>{
+  if(openDrop){
+    const d=document.getElementById(`drop-${openDrop}`);
+    if(d) d.classList.remove('open');
+    openDrop=null;
+  }
+});
+
+// ── COPY ──────────────────────────────────
+function copyDrop(id) {
+  navigator.clipboard.writeText(MSG).then(()=>{
+    const btn = document.getElementById(`dcopy-${id}`);
+    if(btn){btn.textContent='✅ Copied! Paste in LinkedIn note';btn.classList.add('copied')}
+    toast('✅ Message copied — paste in LinkedIn note field!');
+    setTimeout(()=>{
+      if(btn){btn.textContent='📋 Copy Outreach Message';btn.classList.remove('copied')}
+    },3000);
+  });
+}
+function quickCopy(id) {
+  navigator.clipboard.writeText(MSG).then(()=>{
+    const btn=document.getElementById(`qc-${id}`);
+    if(btn){btn.textContent='✅';btn.classList.add('copied')}
+    toast('✅ Message copied!');
+    setTimeout(()=>{if(btn){btn.textContent='📋 Msg';btn.classList.remove('copied')}},2500);
+  });
+}
+function toast(msg='✅') {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+// ── STATUS ────────────────────────────────
+function setStat(btn, id) {
+  btn.closest('.sbtns').querySelectorAll('.sbtn2').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  statuses[id]=parseInt(btn.dataset.s);
+  updStats();
+}
+function updStats() {
+  let p=0,c=0,r=0;
+  DATA.forEach(d=>{const s=statuses[d.id];if(s===0)p++;else if(s===1)c++;else if(s===2)r++;});
+  document.getElementById('st-p').textContent=p;
+  document.getElementById('st-c').textContent=c;
+  document.getElementById('st-r').textContent=r;
+}
+
+// ── FILTER ────────────────────────────────
+function setFilter(type,btn) {
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter=type; render();
+}
+
+// ── SEARCH ────────────────────────────────
+function liveSearch() {
+  const co  = document.getElementById('s-co').value.trim();
+  const web = document.getElementById('s-web').value.trim();
+  searchStr = co + (web?' '+web:'');
+  render();
+}
+
+function doSearch() {
+  const co = document.getElementById('s-co').value.trim();
+  if (!co) {
+    const inp=document.getElementById('s-co');
+    inp.classList.add('err');
+    inp.placeholder='⚠️ Company name is required!';
+    inp.focus();
+    setTimeout(()=>{inp.classList.remove('err');inp.placeholder='e.g. Infosys, Wipro, PhonePe…';},2400);
+    return;
+  }
+  liveSearch();
+  toast(`🔍 Showing results for: "${co}"`);
+}
+
+function clearAll() {
+  document.getElementById('s-co').value='';
+  document.getElementById('s-web').value='';
+  document.getElementById('s-loc').value='Bengaluru / Bangalore';
+  searchStr=''; activeFilter='all';
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.fb').classList.add('active');
+  render();
+  toast('✕ Filters cleared');
+}
+
+// ── INIT ──────────────────────────────────
+render();
+</script>
+</body>
+</html>
